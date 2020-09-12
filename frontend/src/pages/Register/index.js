@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 
 import {Link, useHistory} from 'react-router-dom';
-
-import logoImg from '../../assets/DathApp.png';
-
-import './styles.css';
+import { FiArrowLeft } from 'react-icons/fi';
 
 export default function Register() {
     
@@ -36,11 +33,12 @@ export default function Register() {
     }
 
     return(
-        <div className="container">
-            <img src={logoImg} alt="DathApp" className="img"/>
+        <>
+            <Link className="back-link" to="/" style={{position: 'absolute', left: 2, top:15}}>
+                <FiArrowLeft size={50} color="#FFF" />
+            </Link>
 
             <section className="form">
-            
                 <form onSubmit={handleRegister}>
                     <h1 style={{marginLeft: 15 }}>Faça seu cadastro</h1>
 
@@ -65,11 +63,13 @@ export default function Register() {
                         value={senha}
                         onChange={e => setSenha(e.target.value)}
                     />
-                    <button className="button" type="submit" >Entrar</button>
+                    <button className="button" type="submit" >
+                        Salvar
+                    </button>
 
                     
                 </form>
             </section>
-        </div>
+        </>
     )
 }
