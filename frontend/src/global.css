@@ -1,44 +1,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
 .container{
-    width: 105%;
-    height: 100vh;
-    margin:-8px;
-    margin-right: -20px;
+    min-width: 100%;
+    min-height: 120vh;
     background-color: #293f7b;
     flex-direction: column;
     display: flex;
     align-items: center;
 }
 
-.container img.img {
+.container img.logo {
     width: 250px;
 }
 
 .container section.form {
-    width: 46vh;
+    width: 100%;
+    max-width: 700px;
     background-color: white;
-    border-radius: 5px;   
-    flex-direction: column;
+    border-radius: 8px;   
+    margin-bottom: 20px;
+}
+
+.container form {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container .actions {
+    width: 82%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
 
-h1 {
-    font: bold 25px Roboto, sans-serif;
+.container h1 {
+    font: bold 35px Roboto, sans-serif;
+    margin-left: 15px; 
+    margin-top: 20px; 
+    margin-bottom: 20px;
 }
 
-input, button, textarea {
+.container input, button, textarea {
     font: 400 18px Roboto, sans-serif;
 }
 
-button{
+.container button{
     cursor: pointer;
-    margin-bottom: 35px;
+    margin-bottom: 20px;
 }
 
-form input{
+.container form input{
     width: 81%;
     height: 60px;
     color: #333;
@@ -49,8 +63,9 @@ form input{
     margin-left: 10px;
 }
 
-.button {
-    width: 94%;
+.container .actions button.button {
+    max-width: 10px;
+    min-width: 150px;
     height: 60px;
     background-color: #293f7b;
     border: 0;
@@ -58,7 +73,6 @@ form input{
     color: #fff;
     font: 700;
     margin-top: 16px;
-    margin-left: 10px;
     display: inline-block;
     text-align: center;
     text-decoration: none;
@@ -67,7 +81,26 @@ form input{
     transition: filter 0.2s;
 }
 
-.button:hover {
+.container section.form button {
+    max-width: 10px;
+    min-width: 150px;
+    min-height: 60px;
+    max-height: 30px;;
+    background-color: #293f7b;
+    border: 0;
+    border-radius: 8px;
+    color: #fff;
+    font: 700;
+    margin-top: 16px;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 60px;
+    transition: filter 0.2s;
+}
+
+.container section.form button.button:hover {
     filter: brightness(90%);
 }
 

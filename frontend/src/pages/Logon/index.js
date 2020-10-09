@@ -3,10 +3,6 @@ import React, {useState } from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
 
-import logoImg from '../../assets/DathApp.png';
-
-import './styles.css';
-
 export default function Logon(){
     
     const [nick, setNick] = useState('');
@@ -29,32 +25,33 @@ export default function Logon(){
     }
 
     return(
-        <div className="container">
-            <img src={logoImg} alt="DathApp" className="img"/>
-            <section className="form">
-            
-                <form onSubmit={handleLogin}>
-                    <h1 style={{marginLeft: 15 }}>Faça seu logon</h1>
 
-                    <input 
-                        placeholder="Seu nick" 
-                        value={nick}
-                        onChange={e => setNick(e.target.value)}
-                    />
-                    <input 
-                        placeholder="Sua senha" 
-                        type="password"
-                        value={senha}
-                        onChange={e => setSenha(e.target.value)}
-                    />
+        <section className="form">
+            <form onSubmit={handleLogin}>
+                <h1>Faça seu logon</h1>
+
+                <input 
+                    placeholder="Seu nick" 
+                    value={nick}
+                    onChange={e => setNick(e.target.value)}
+                />
+                <input 
+                    placeholder="Sua senha" 
+                    type="password"
+                    value={senha}
+                    onChange={e => setSenha(e.target.value)}
+                />
+
+                <div className="actions">
                     <button className="button" type="submit" >Entrar</button>
 
-                    <Link className="back-link" to="/register" style={{marginBottom: 30}}>
-                        <FiLogIn size={40} color="#293f7b" />
-                        Não tenho cadastro
+                    <Link className="back-link" to="/register" style={{fontSize: 15}}>
+                        <FiLogIn size={30} color="#293f7b" />
+                            Não tenho cadastro
                     </Link>
-                </form>
-            </section>
-        </div>
+                </div>
+            
+            </form>
+        </section>
     )
 }
