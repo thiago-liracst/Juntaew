@@ -2,16 +2,16 @@ const { increment } = require("../connection");
 
 exports.up = function(knex) {
     return knex.schema.createTable('eventos', function (table) {
-        tableOpa.increments();
-        table.string('criador').NotNullable();
+        table.increments();
+        table.string('criador').notNullable();
         table.foreign('criador').references('nick').inTable('users');
-        table.decimal('local').NotNullable();
+        table.decimal('local').notNullable();
         table.foreign('local').references('id').inTable('locais');
-        table.string('nome').NotNullable();
-        table.decimal('dia').NotNullable();
-        table.decimal('mes').NotNullable();
-        table.string('horario').NotNullable();
-        table.string('esporte').NotNullable();
+        table.string('nome').notNullable();
+        table.decimal('dia').notNullable();
+        table.decimal('mes').notNullable();
+        table.string('horario').notNullable();
+        table.string('esporte').notNullable();
     })
 };
 

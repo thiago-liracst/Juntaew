@@ -3,6 +3,8 @@ import React, {useState } from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
 
+import api from '../../service/api';
+
 export default function Logon(){
     
     const [nick, setNick] = useState('');
@@ -13,12 +15,12 @@ export default function Logon(){
         e.preventDefault();
 
         try {
-            //const response = await api.post('sessions', { id });
-            
-            //localStorage.setItem('ongId', id);
-            //localStorage.setItem('ongName', response.data.name);
-
-            history.push('/homeuser');
+            const response = await api.post('/login', {nick, senha});
+            if (response.data===true) {
+                history.push('/homeuser', nick);
+            }else{
+                alert('Nick ou senha inválidos!')
+            }
         } catch (error) {
             alert("Falha no login, tente novmente.");
         }

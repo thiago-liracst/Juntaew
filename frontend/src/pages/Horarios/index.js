@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {Link, useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
@@ -9,22 +9,28 @@ import './styles.css';
 
 import { Carousel } from 'react-bootstrap';
 
+import api from '../../service/api';
+
 export default function Horarios() {
 
   const [dia, setDia] = useState(0);
   const [mes, setMes] = useState(0);
 
+  const [horarios, setHorarios] = useState([]);
+  const local = localStorage.getItem('localID');
   const history = useHistory();
+
+  useEffect(() => {
+    api.get('horarios')
+    .then(response => {
+        setHorarios(response.data.filter(horario => horario.local === localStorage.getItem('localID')));
+    });
+  }, []);
 
   async function handleDetalhes(e) {
     e.preventDefault();
 
     try {
-        //const response = await api.post('sessions', { id });
-        
-        //localStorage.setItem('ongId', id);
-        //localStorage.setItem('ongName', response.data.name);
-
         history.push('/vaga');
     } catch (error) {
         alert("Falha no login, tente novmente.");

@@ -1,12 +1,11 @@
 exports.up = function(knex) {
     return knex.schema.createTable('horarios', function (table) {
         table.increments();
-        table.decimal('local').NotNullable();
+        table.decimal('local').notNullable();
         table.foreign('local').references('id').inTable('locais');
-        table.string('dia').NotNullable();
-        table.decimal('inicio').NotNullable();
-        table.decimal('fim').NotNullable();
-        table.string('email').NotNullable();
+        table.string('dia').notNullable();
+        table.decimal('inicio').notNullable();
+        table.decimal('fim').notNullable();
     })
 };
 

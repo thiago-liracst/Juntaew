@@ -1,23 +1,30 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {Link, useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
 import './styles.css';
 
+import api from '../../service/api';
+
 export default function HomeUser() {
     
+    const [locais, setLocais] = useState([]);
+
     const history = useHistory();
 
-    async function handleHorarios(e) {
+    useEffect(() => {
+        api.get('locais')
+        .then(response => {
+            setLocais(response.data);
+        });
+    }, []);
+
+    async function handleHorarios(e, id) {
         e.preventDefault();
 
         try {
-            //const response = await api.post('sessions', { id });
-            
-            //localStorage.setItem('ongId', id);
-            //localStorage.setItem('ongName', response.data.name);
-
+            localStorage.setItem('localID', id);
             history.push('/horarios');
         } catch (error) {
             alert("Falha, tente novmente.");
@@ -44,74 +51,24 @@ export default function HomeUser() {
 
                 <section className="form">
                     <ul>
-                        <li>
-                            <strong>Local:</strong>
-                            <p>Ginásio O Zézão</p>
+                        {locais.map(local => (
+                            <li key={local.id}>
+                                <strong>Local:</strong>
+                                <p>{local.nome}</p>
 
-                            <strong>Endereço:</strong>
-                            <p>Rua Zezinho do Pão</p>
+                                <strong>Endereço:</strong>
+                                <p>{local.endereco}, {local.cidade} - {local.uf}</p>
 
-                            <strong>VALOR:</strong>
-                            <p>R$15,00</p>
+                                <strong>VALOR:</strong>
+                                <p>R${local.valor}</p>
 
-                            <div className="actions">
-                                <button onClick={handleHorarios} type="submit" className="button">
-                                    Ver Horários
-                                </button>
-                            </div>
-                        </li>
-
-                        <li>
-                            <strong>Local:</strong>
-                            <p>Ginásio O Zézão</p>
-
-                            <strong>Endereço:</strong>
-                            <p>Rua Zezinho do Pão</p>
-
-                            <strong>VALOR:</strong>
-                            <p>R$15,00</p>
-
-                            <div className="actions">
-                                <button onClick={() => {}} type="submit" className="button">
-                                    Ver Horários
-                                </button>
-                            </div>
-                
-                        </li>
-
-                        <li>
-                            <strong>Local:</strong>
-                            <p>Ginásio O Zézão</p>
-
-                            <strong>Endereço:</strong>
-                            <p>Rua Zezinho do Pão</p>
-
-                            <strong>VALOR:</strong>
-                            <p>R$15,00</p>
-
-                            <div className="actions">
-                                <button onClick={() => {}} type="submit" className="button">
-                                    Ver Horários
-                                </button>
-                            </div>
-                        </li>
-
-                        <li>
-                            <strong>Local:</strong>
-                            <p>Ginásio O Zézão</p>
-
-                            <strong>Endereço:</strong>
-                            <p>Rua Zezinho do Pão</p>
-
-                            <strong>VALOR:</strong>
-                            <p>R$15,00</p>
-
-                            <div className="actions">
-                                <button onClick={() => {}} type="submit" className="button">
-                                    Ver Horários
-                                </button>
-                            </div>
-                        </li>
+                                <div className="actions">
+                                    <button onClick={(e)=>handleHorarios(e, local.id)} type="submit" className="button">
+                                        Ver Horários
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
                     </ul>
                 </section>
             </div>

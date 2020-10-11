@@ -3,9 +3,11 @@ import React, { useState } from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
+import api from '../../service/api';
+
 export default function Register() {
     
-    const [name, setName] = useState('');
+    const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [nick, setNick] = useState('');
     const [senha, setSenha] = useState('');
@@ -16,18 +18,18 @@ export default function Register() {
         e.preventDefault();
 
         const data = {
-            name,
-            email,
             nick,
             senha,
+            nome,
+            email,
         };
 
         try {
-            //const response = await api.post('ongs', data);
-            //alert(`Seu ID de acesso: ${response.data.id}`);
+            const response = await api.post('/users', data);
+            alert(response.data);
             history.push('/');
         } catch (error) {
-            alert('Erro no cadastro, tente novamente.')
+            alert('Erro no cadastro, tente novamente.');
         }
         
     }
@@ -44,13 +46,13 @@ export default function Register() {
 
                     <input 
                         placeholder="Seu nome" 
-                        value={name}
-                        onChange={e => setNick(e.target.value)}
+                        value={nome}
+                        onChange={e => setNome(e.target.value)}
                     />
                     <input 
                         placeholder="Seu email" 
                         value={email}
-                        onChange={e => setNick(e.target.value)}
+                        onChange={e => setEmail(e.target.value)}
                     />
                     <input 
                         placeholder="Seu nick" 
@@ -65,9 +67,7 @@ export default function Register() {
                     />
                     <button className="button" type="submit" >
                         Salvar
-                    </button>
-
-                    
+                    </button> 
                 </form>
             </section>
         </>
