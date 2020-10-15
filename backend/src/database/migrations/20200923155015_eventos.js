@@ -10,8 +10,11 @@ exports.up = function(knex) {
         table.string('nome').notNullable();
         table.decimal('dia').notNullable();
         table.decimal('mes').notNullable();
-        table.string('horario').notNullable();
+        table.decimal('inicio').notNullable();
+        table.decimal('fim').notNullable();
         table.string('esporte').notNullable();
+        table.decimal('totalVagas').notNullable();
+        table.decimal('disponiveis');
     })
 };
 

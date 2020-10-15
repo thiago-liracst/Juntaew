@@ -5,6 +5,7 @@ const routes = express.Router();
 const UserController = require('./controllers/UserController');
 const LocalController = require('./controllers/LocalController');
 const HorarioController = require('./controllers/HorarioController');
+const EventoController = require('./controllers/EventoController');
 
 routes.post('/users', UserController.create);
 routes.get('/users', UserController.list);
@@ -15,5 +16,7 @@ routes.get('/locais', LocalController.list);
 
 routes.post('/horarios', HorarioController.create);
 routes.get('/horarios', HorarioController.list);
+
+routes.post('/evento', EventoController.create);
 
 module.exports = routes;
