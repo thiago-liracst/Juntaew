@@ -18,5 +18,7 @@ routes.post('/horarios', HorarioController.create);
 routes.get('/horarios', HorarioController.list);
 
 routes.post('/evento', EventoController.create);
+routes.get('/evento', EventoController.list);
+routes.delete('/evento', EventoController.delete);
 
 module.exports = routes;

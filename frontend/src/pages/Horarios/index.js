@@ -13,25 +13,51 @@ import api from '../../service/api';
 
 export default function Horarios() {
 
-  const [dia, setDia] = useState(0);
-  const [mes, setMes] = useState(0);
+  const [nome, setNome] = useState("")
+  const [dia, setDia] = useState("");
+  const [mes, setMes] = useState("");
+  const [inicio, setInicio] = useState("");
+  const [fim, setFim] = useState("");
+  const [esporte, setEsporte] = useState("");
+  const [totalVagas, setTotalVagas] = useState("");
 
   const [horarios, setHorarios] = useState([]);
+
   const local = localStorage.getItem('localID');
   const history = useHistory();
 
   useEffect(() => {
     api.get('horarios')
-    .then(response => {
-        setHorarios(response.data.filter(horario => horario.local === localStorage.getItem('localID')));
-    });
+      .then(response => {
+          setHorarios(response.data.filter(horario => horario.local === localStorage.getItem('localID')));
+      });
+
   }, []);
+
+  async function handleMarcarHorario(e){
+    e.preventDefault();
+
+    try {
+      api.post('/evento', {
+        nome: nome,
+        dia: dia,
+        mes: mes,
+        inicio: inicio,
+        fim: fim,
+        esporte: esporte,
+        totalVagas: totalVagas,
+      });
+      window.location.reload();
+    } catch (error) {
+      alert("Erro: "+error);
+    }
+  }
 
   async function handleDetalhes(e) {
     e.preventDefault();
 
     try {
-        history.push('/vaga');
+        history.push('/vaga', local);
     } catch (error) {
         alert("Falha no login, tente novmente.");
     }
@@ -147,47 +173,54 @@ export default function Horarios() {
 
         </Carousel>
 
-        <form onSubmit={() => {}} className="marcarHorario">
+        <form onSubmit={handleMarcarHorario} className="marcarHorario">
           <h1 style={{marginLeft: 15 }}>Marcar Horário</h1>
 
-          <h5>Nome</h5>
+          <h5>Nome do evento</h5>
           <input 
-            placeholder="Nome do evento"
-            value={"Pelada valendo Coca"}
-            onChange={() => {}}
+            placeholder="Pelada valendo coca"
+            onChange={(e) => setNome(e.target.value)}
           />
 
           <div className="diames">
             <div className="diadiv">
               <h5>Dia</h5>
               <input 
-                placeholder="00" 
-                value={dia}
+                placeholder="00"
                 onChange={e => setDia(e.target.value)}
               />
             </div>
             <div className="mesdiv">
               <h5>Mês</h5>
               <input 
-                placeholder="00" 
-                value={mes}
+                placeholder="00"
                 onChange={e => setMes(e.target.value)}
               />
             </div>
           </div>
           
-          <h5>Horário</h5>
+          <h5>Início</h5>
           <input 
-            placeholder="00" 
-            value={mes}
-            onChange={e => setMes(e.target.value)}
+            placeholder="8"
+            onChange={e => setInicio(e.target.value)}
+          />
+
+          <h5>Fim</h5>
+          <input 
+            placeholder="10"
+            onChange={e => setFim(e.target.value)}
           />
 
           <h5>Tipo de esporte</h5>
           <input 
-            //placeholder="Nome do evento"
-            value={"Futebol"}
-            onChange={() => {}}
+            placeholder="Futebol"
+            onChange={(e) => setEsporte(e.target.value)}
+          />
+
+          <h5>Quantidade de Vagas</h5>
+          <input 
+            placeholder="15"
+            onChange={(e) => setTotalVagas(e.target.value)}
           />
         
           <button className="button" type="submit" >

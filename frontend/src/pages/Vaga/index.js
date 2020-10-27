@@ -1,11 +1,11 @@
-import React, {useState } from 'react';
+import React from 'react';
 
-import {Link, useHistory} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
 export default function Vaga() {
 
-    const history = useHistory();
+    //const history = useHistory();
 
     return(
         <>

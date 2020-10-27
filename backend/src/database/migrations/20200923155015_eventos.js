@@ -14,7 +14,7 @@ exports.up = function(knex) {
         table.decimal('fim').notNullable();
         table.string('esporte').notNullable();
         table.decimal('totalVagas').notNullable();
-        table.decimal('disponiveis');
+        table.decimal('disponiveis').notNullable();
     })
 };
 

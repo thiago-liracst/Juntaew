@@ -1,5 +1,38 @@
 const connection = require('../database/connection.js');
 
+async function validaLocal(localId){
+    const locais = await connection('locais').select('*');
+    locais.map((local) => {
+        if (local.id === localId) {
+            return true;
+        }
+    });
+    return false;
+}
+
+async function validaCriador(criador){
+    const users = await connection('users').select('*');
+    users.map((user) => {
+        if (user.nick === criador) {
+            return true;
+        }
+    });
+    return false;
+}
+
+async function validaHorario(dia, mes, inicio, fim){
+    const eventos = await connection('eventos').select('*');
+    eventos.map((evento) => {
+        if (evento.dia === dia && evento.mes === mes) {
+            if (evento.inicio === inicio && evento.fim === fim) {
+                console.log(evento.dia + ' ' + evento.mes);
+                return false;
+            }
+        }
+    });
+    return true;
+}
+
 module.exports = {
     async create(request, response){
         try {
@@ -15,27 +48,29 @@ module.exports = {
                 totalVagas
             } = request.body;
             const disponiveis = totalVagas-1;
-            if (
-                validaCriador(criador) && 
-                validaLocal(local) && 
-                validaHorario(local, dia, mes, inicio, fim)) {
-                    await connection('eventos').insert({
-                        criador,
-                        local,
-                        nome,
-                        dia,
-                        mes,
-                        inicio,
-                        fim,
-                        esporte,
-                        totalVagas,
-                        disponiveis
-                    });
 
-                    return response.json("Sucesso!");
-            } else {
-                throw new Error("Campos inválidos!");
+            if (validaCriador(criador)
+            
+             && validaLocal(local)
+            && validaHorario(dia, mes, inicio, fim)
+            
+            ){
+                await connection('eventos').insert({
+                    criador,
+                    local,
+                    nome,
+                    dia,
+                    mes,
+                    inicio,
+                    fim,
+                    esporte,
+                    totalVagas,
+                    disponiveis
+                });
+
+                return response.json("Sucesso!");
             }
+            throw new Error("Campos inválidos");     
         } catch (error) {
             return response.json(error);
         }
@@ -50,27 +85,21 @@ module.exports = {
         }
     },
 
-    async validaCriador(criador){
-        let resposta = false;
-        const users = await connection('users').select('*');
-        eventos.map((user) => {
-            if (user.nick === criador) {
-                resposta = true;
-            }
-        });
-        return resposta;
+    async delete(request, response){
+        try {
+            const {id} = request.body;
+            await connection('eventos').where('id', id).del();
+            return response.json("Sucess!")
+        } catch (error) {
+            return response.json(error);
+        }
     },
 
-    async validaLocal(local){
-        let resposta = false;
-        const locais = await connection('locais').select('*');
-        eventos.map((local) => {
-            if (local.nome === local) {
-                resposta = true;
-            }
-        });
-        return resposta;
+    async validaCriador(criador){
+        
     },
+
+    
 
     async validaHorario(local, dia, mes, inicio, fim){
         let resposta = true;
