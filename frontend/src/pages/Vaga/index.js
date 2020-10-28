@@ -1,48 +1,96 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
+import { AiOutlineLogout } from 'react-icons/ai';
+
+import api from '../../service/api';
 
 export default function Vaga() {
 
-    //const history = useHistory();
+    const [evento, setEvento] = useState({});
+
+    const history = useHistory();
+    
+    useEffect(() => {
+
+        const idEvento = localStorage.getItem('evento');
+
+        api.get('evento')
+            .then(response => {
+                response.data.map((horario) => {
+                    if (horario.id === parseInt(idEvento)) {
+                        console.log("Entroouuuu");
+                        setEvento(horario);
+                    }
+                });
+            });
+      }, []);
+
+      function handleLogout(){
+        localStorage.clear();
+        history.push('/');
+      }
 
     return(
         <>
             <Link className="back-link" to="/horarios" style={{position: 'absolute', left: 2, top:15}}>
                 <FiArrowLeft size={50} color="#FFF" />
             </Link>
+
+            <Link className="back-link" onClick={handleLogout} style={{position: 'absolute', right: 2, top:15}}>
+                <AiOutlineLogout size={50} color="#FFF" />
+            </Link>
+
             <section className="form">
                 <form>
                     <h1>Detalhes do evento</h1>
                     <h5>Nome</h5>
                     <input  
-                        value={"Pelada valendo Coca"}
+                        value={evento.nome}
                         disabled={true}
                     />
                     
                     <h5>Data</h5>
                     <input 
-                        value={"03/07"}
+                        value={evento.dia+"/"+evento.mes}
                         disabled={true}
                     />
 
                     <h5>Horário</h5>
                     <input 
-                        value={"07:09"}
+                        value={"Das "+evento.inicio+" às "+evento.fim}
                         disabled={true}
                     />
 
                     <h5>Tipo</h5>
                     <input 
                         style={{marginBottom: 20}}
-                        value={"Futebol"}
+                        value={evento.esporte}
+                        disabled={true}
+                    />
+
+                    <h5>Total de Vagas</h5>
+                    <input 
+                        style={{marginBottom: 20}}
+                        value={evento.totalVagas}
+                        disabled={true}
+                    />
+
+                    <h5>Total de Vagas</h5>
+                    <input 
+                        style={{marginBottom: 20}}
+                        value={evento.disponiveis}
                         disabled={true}
                     />
                 </form>
 
             </section>
+        </>
+    )
 
+    {
+        /*
             <section className="form">
 
                 <form>
@@ -66,6 +114,6 @@ export default function Vaga() {
                 </form>
 
             </section>
-        </>
-    )
+        */
+    }
 }

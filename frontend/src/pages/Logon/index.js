@@ -17,6 +17,7 @@ export default function Logon(){
         try {
             const response = await api.post('/login', {nick, senha});
             if (response.data===true) {
+                localStorage.setItem('login', nick);
                 history.push('/homeuser', nick);
             }else{
                 alert('Nick ou senha inválidos!')

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import {Link, useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
+import { AiOutlineLogout } from 'react-icons/ai';
 
 import './styles.css';
 
@@ -31,11 +32,21 @@ export default function HomeUser() {
         }
     }
 
+    function handleLogout(){
+        localStorage.clear();
+        history.push('/');
+    }
+
     return(
         <>
             <Link className="back-link" to="/" style={{position: 'absolute', left: 2, top:15}}>
                 <FiArrowLeft size={50} color="#FFF" />
             </Link>
+
+            <Link className="back-link" onClick={handleLogout} style={{position: 'absolute', right: 2, top:15}}>
+                <AiOutlineLogout size={50} color="#FFF" />
+            </Link>
+
             <div className="container-list">
                 <input 
                     placeholder="Pesquisar esporte"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import {Link, useHistory} from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
+import { AiOutlineLogout } from 'react-icons/ai';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,17 +22,16 @@ export default function Horarios() {
   const [esporte, setEsporte] = useState("");
   const [totalVagas, setTotalVagas] = useState("");
 
-  const [horarios, setHorarios] = useState([]);
+  const [eventos, setEventos] = useState([]);
 
-  const local = localStorage.getItem('localID');
+  const localId = localStorage.getItem('localID');
   const history = useHistory();
 
   useEffect(() => {
-    api.get('horarios')
-      .then(response => {
-          setHorarios(response.data.filter(horario => horario.local === localStorage.getItem('localID')));
-      });
-
+    api.get('evento')
+        .then(response => {
+            setEventos(response.data);
+        });
   }, []);
 
   async function handleMarcarHorario(e){
@@ -39,13 +39,15 @@ export default function Horarios() {
 
     try {
       api.post('/evento', {
+        criador: localStorage.getItem('login').toString(),
+        local: parseInt(localId),
         nome: nome,
-        dia: dia,
-        mes: mes,
-        inicio: inicio,
-        fim: fim,
+        dia: parseInt(dia),
+        mes: parseInt(mes),
+        inicio: parseInt(inicio),
+        fim: parseInt(fim),
         esporte: esporte,
-        totalVagas: totalVagas,
+        totalVagas: parseInt(totalVagas),
       });
       window.location.reload();
     } catch (error) {
@@ -53,20 +55,46 @@ export default function Horarios() {
     }
   }
 
-  async function handleDetalhes(e) {
+  async function handleDetalhes(e, idEvento) {
     e.preventDefault();
 
+    console.log(idEvento);
+
     try {
-        history.push('/vaga', local);
+        localStorage.setItem('evento', idEvento);
+        history.push('/vaga');
     } catch (error) {
         alert("Falha no login, tente novmente.");
     }
+  }
+
+  async function handlePreencher(e, idEvento, disponiveis){
+    e.preventDefault();
+
+    try {
+      api.post('/preencherVaga', {
+        idEvento,
+        disponiveis
+      });
+      window.location.reload();
+    } catch (error) {
+      alert("Erro: "+error);
+    }
+  }
+
+  function handleLogout(){
+    localStorage.clear();
+    history.push('/');
   }
 
   return (
     <>
       <Link className="back-link" to="/homeuser" style={{position: 'absolute', left: 2, top:15}}>
         <FiArrowLeft size={50} color="#FFF" />
+      </Link>
+
+      <Link className="back-link" onClick={handleLogout} style={{position: 'absolute', right: 2, top:15}}>
+        <AiOutlineLogout size={50} color="#FFF" />
       </Link>
       
       <div className="container-horarios">
@@ -231,21 +259,22 @@ export default function Horarios() {
 
         <div className="listarHorarios">
           <h3>Reservados</h3>
-
+          {eventos.map((evento) => (
           <div className="reservado">
-            <h4>Dia 14</h4>
-            <h5>Das 9:00 às 11:00</h5>
-            <h5>2/10 Vagas disponíveis</h5>
+            <h4>Dia {evento.dia}</h4>
+            <h5>Das {evento.inicio}:00 às {evento.fim}:00</h5>
+          <h5>{evento.disponiveis}/{evento.totalVagas} Vagas disponíveis</h5>
             
             <div className="buttons">
-              <button className="buttonPreencher" onClick={() => {}} type="submit">
+              <button className="buttonPreencher" onClick={(e) => handlePreencher(e, evento.id, evento.disponiveis)} type="submit">
                 Preencher Vaga
               </button>
-              <button className="buttonDetalhes" onClick={handleDetalhes} type="submit">
+              <button className="buttonDetalhes" onClick={(e) => handleDetalhes(e, evento.id)} type="submit">
                 Mais Detalhes
               </button>
             </div>
           </div>
+          ))}
         </div>
       </div> 
     </>
