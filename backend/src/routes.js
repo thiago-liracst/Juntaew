@@ -20,5 +20,6 @@ routes.get('/horarios', HorarioController.list);
 routes.post('/evento', EventoController.create);
 routes.get('/evento', EventoController.list);
 routes.delete('/evento', EventoController.delete);
+routes.post('/preencherVaga', EventoController.preencherVaga);
 
 module.exports = routes;

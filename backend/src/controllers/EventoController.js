@@ -1,36 +1,38 @@
 const connection = require('../database/connection.js');
 
 async function validaLocal(localId){
+    let response = false;
     const locais = await connection('locais').select('*');
     locais.map((local) => {
         if (local.id === localId) {
-            return true;
+            response = true;
         }
     });
-    return false;
+    return response;
 }
 
 async function validaCriador(criador){
+    let response = false
     const users = await connection('users').select('*');
     users.map((user) => {
         if (user.nick === criador) {
-            return true;
+            response = true;
         }
     });
-    return false;
+    return response;
 }
 
 async function validaHorario(dia, mes, inicio, fim){
+    let response = true;
     const eventos = await connection('eventos').select('*');
     eventos.map((evento) => {
         if (evento.dia === dia && evento.mes === mes) {
             if (evento.inicio === inicio && evento.fim === fim) {
-                console.log(evento.dia + ' ' + evento.mes);
-                return false;
+                response = false;
             }
         }
     });
-    return true;
+    return response;
 }
 
 module.exports = {
@@ -48,12 +50,12 @@ module.exports = {
                 totalVagas
             } = request.body;
             const disponiveis = totalVagas-1;
-
-            if (validaCriador(criador)
             
-             && validaLocal(local)
-            && validaHorario(dia, mes, inicio, fim)
-            
+            //console.log(validaCriador(criador))
+            if (
+                await validaCriador(criador) &&
+                await validaLocal(local) &&
+                await validaHorario(dia, mes, inicio, fim)
             ){
                 await connection('eventos').insert({
                     criador,
@@ -70,7 +72,7 @@ module.exports = {
 
                 return response.json("Sucesso!");
             }
-            throw new Error("Campos inválidos");     
+            throw "Evento não disponível!";  
         } catch (error) {
             return response.json(error);
         }
@@ -89,30 +91,19 @@ module.exports = {
         try {
             const {id} = request.body;
             await connection('eventos').where('id', id).del();
-            return response.json("Sucess!")
+            return response.json("Sucess!");
         } catch (error) {
             return response.json(error);
         }
     },
 
-    async validaCriador(criador){
-        
-    },
-
-    
-
-    async validaHorario(local, dia, mes, inicio, fim){
-        let resposta = true;
-        const horarios = await connection('horarios').select('*');
-        horarios.map((horario) => {
-            if (horario.local===local) {
-                if (horario.dia === dia) {
-                    if (parseInt(horario.inicio)>=inicio || parseInt(horario.fim)<fim) {
-                        resposta = false;
-                    }
-                }
-            }
-        });
-        return resposta;
+    async preencherVaga(request, response){
+        try {
+            const {idEvento, disponiveis} = request.body;
+            await connection('eventos').where('id', idEvento).update('disponiveis', disponiveis-1);
+            return response.json("Sucess!");
+        } catch (error) {
+            return response.json(error);
+        }
     }
 }
