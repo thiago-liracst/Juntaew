@@ -23,5 +23,25 @@ module.exports = {
         } catch (error) {
             return response.json(error);
         }
+    },
+
+    async horariosLocal(request, response){
+        try {
+            const { id_local } = request.body;
+            const horarios = await connection('horarios').select('*').where('local', id_local);
+            return response.json(horarios);
+        } catch (error) {
+            return response.json(error);
+        }
+    },
+
+    async delete(request, response){
+        try {
+            const {id} = request.body;
+            await connection('horarios').select('*').where('id', id).del();
+            return response.json("Sucess!");
+        } catch (error) {
+            return response.json(error);
+        }
     }
 }

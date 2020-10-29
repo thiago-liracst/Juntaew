@@ -23,6 +23,15 @@ export default function Horarios() {
   const [totalVagas, setTotalVagas] = useState("");
 
   const [eventos, setEventos] = useState([]);
+  const [horarios, setHorarios] = useState([]);
+
+  const [segunda, setSegunda] = useState([]);
+  const [terca, setTerca] = useState([]);
+  const [quarta, setQuarta] = useState([]);
+  const [quinta, setQuinta] = useState([]);
+  const [sexta, setSexta] = useState([]);
+  const [sabado, setSabado] = useState([]);
+  const [domingo, setDomingo] = useState([]);
 
   const localId = localStorage.getItem('localID');
   const history = useHistory();
@@ -31,6 +40,13 @@ export default function Horarios() {
     api.get('evento')
         .then(response => {
             setEventos(response.data);
+        });
+  }, []);
+
+  useEffect(() => {
+    api.post('horariosLocal', {id_local:localStorage.getItem('localID')})
+        .then(response => {
+            setHorarios(response.data);
         });
   }, []);
 
@@ -98,23 +114,16 @@ export default function Horarios() {
       </Link>
       
       <div className="container-horarios">
-        <Carousel>
+        <Carousel indicators={false}>
           <Carousel.Item>
             <div className="dia">
               <h3>Segunda</h3>
               <ul>
-                <li>
-                  7:00 às 9:00
-                </li>
-                <li>
-                  9:00 às 11:00
-                </li>
-                <li>
-                  13:00 às 15:00
-                </li>
-                <li>
-                  15:00 às 17:00
-                </li>
+                {horarios.map((horario) => {
+                  if (horario.dia==="Segunda") {
+                    return <li>{horario.inicio}:00 às {horario.fim}:00</li>
+                  }
+                })}
               </ul>
             </div>
           </Carousel.Item>
@@ -123,18 +132,11 @@ export default function Horarios() {
             <div className="dia">
               <h3>Terça</h3>
               <ul>
-                <li>
-                  7:00 às 9:00
-                </li>
-                <li>
-                  9:00 às 11:00
-                </li>
-                <li>
-                  13:00 às 15:00
-                </li>
-                <li>
-                  15:00 às 17:00
-                </li>
+                {horarios.map((horario) => {
+                  if (horario.dia==="Terca") {
+                    return <li>{horario.inicio}:00 às {horario.fim}:00</li>
+                  }
+                })}
               </ul>
             </div>
           </Carousel.Item>
@@ -143,18 +145,11 @@ export default function Horarios() {
             <div className="dia">
               <h3>Quarta</h3>
               <ul>
-                <li>
-                  7:00 às 9:00
-                </li>
-                <li>
-                  9:00 às 11:00
-                </li>
-                <li>
-                  13:00 às 15:00
-                </li>
-                <li>
-                  15:00 às 17:00
-                </li>
+                {horarios.map((horario) => {
+                  if (horario.dia==="Quarta") {
+                    return <li>{horario.inicio}:00 às {horario.fim}:00</li>
+                  }
+                })}
               </ul>
             </div>
           </Carousel.Item>
@@ -163,18 +158,11 @@ export default function Horarios() {
             <div className="dia">
               <h3>Quinta</h3>
               <ul>
-                <li>
-                  7:00 às 9:00
-                </li>
-                <li>
-                  9:00 às 11:00
-                </li>
-                <li>
-                  13:00 às 15:00
-                </li>
-                <li>
-                  15:00 às 17:00
-                </li>
+                {horarios.map((horario) => {
+                  if (horario.dia==="Quinta") {
+                    return <li>{horario.inicio}:00 às {horario.fim}:00</li>
+                  }
+                })}
               </ul>
             </div>
           </Carousel.Item>
@@ -183,18 +171,37 @@ export default function Horarios() {
             <div className="dia">
               <h3>Sexta</h3>
               <ul>
-                <li>
-                  7:00 às 9:00
-                </li>
-                <li>
-                  9:00 às 11:00
-                </li>
-                <li>
-                  13:00 às 15:00
-                </li>
-                <li>
-                  15:00 às 17:00
-                </li>
+                {horarios.map((horario) => {
+                  if (horario.dia==="Sexta") {
+                    return <li>{horario.inicio}:00 às {horario.fim}:00</li>
+                  }
+                })}
+              </ul>
+            </div>
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <div className="dia">
+              <h3>Sábado</h3>
+              <ul>
+                {horarios.map((horario) => {
+                  if (horario.dia==="Sabado") {
+                    return <li>{horario.inicio}:00 às {horario.fim}:00</li>
+                  }
+                })}
+              </ul>
+            </div>
+          </Carousel.Item>
+
+          <Carousel.Item>
+            <div className="dia">
+              <h3>Domingo</h3>
+              <ul>
+                {horarios.map((horario) => {
+                  if (horario.dia==="Domingo") {
+                    return <li>{horario.inicio}:00 às {horario.fim}:00</li>
+                  }
+                })}
               </ul>
             </div>
           </Carousel.Item>

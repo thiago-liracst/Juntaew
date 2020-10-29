@@ -9,7 +9,6 @@
 
 .container-horarios .dia{
     width: 45vh;
-    height: 23vh;
     background-color: white;
     display: flex;
     flex-direction: column;
