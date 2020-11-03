@@ -1,11 +1,12 @@
 exports.up = function(knex) {
     return knex.schema.createTable('locais', function (table) {
-        table.increments();
         table.string('nome').notNullable();
         table.string('endereco');
         table.string('cidade').notNullable();
         table.string('uf').notNullable();
         table.decimal('valor').notNullable();
+        table.string('login').primary();
+        table.string('senha').notNullable();
     })
 };
 

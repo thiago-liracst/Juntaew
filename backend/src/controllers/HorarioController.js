@@ -1,16 +1,31 @@
 const connection = require('../database/connection.js');
 
+async function validaLocal(localLogin){
+    let response = false;
+    const locais = await connection('locais').select('*');
+    locais.map((local) => {
+        if (local.login === localLogin) {
+            response = true;
+        }
+    });
+    return response;
+}
+
 module.exports = {
     async create(request, response){
         try {
             const {local, dia, inicio, fim} = request.body;
-            await connection('horarios').insert({
-                local,
-                dia,
-                inicio,
-                fim
-            });
-            return response.json('Sucess!');
+            if (await validaLocal(local)) {
+                await connection('horarios').insert({
+                    local,
+                    dia,
+                    inicio,
+                    fim
+                });
+                return response.json('Sucess!');
+            }else{
+                throw Error("Local inválido")
+            }
         } catch (error) {
             return response.json(error);
         }
@@ -27,8 +42,8 @@ module.exports = {
 
     async horariosLocal(request, response){
         try {
-            const { id_local } = request.body;
-            const horarios = await connection('horarios').select('*').where('local', id_local);
+            const { local } = request.body;
+            const horarios = await connection('horarios').select('*').where('local', local);
             return response.json(horarios);
         } catch (error) {
             return response.json(error);

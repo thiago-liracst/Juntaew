@@ -1,10 +1,10 @@
 const connection = require('../database/connection.js');
 
-async function validaLocal(localId){
+async function validaLocal(localLogin){
     let response = false;
     const locais = await connection('locais').select('*');
     locais.map((local) => {
-        if (local.id === localId) {
+        if (local.login === localLogin) {
             response = true;
         }
     });

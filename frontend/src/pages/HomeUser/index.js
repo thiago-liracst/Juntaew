@@ -21,11 +21,11 @@ export default function HomeUser() {
         });
     }, []);
 
-    async function handleHorarios(e, id) {
+    async function handleHorarios(e, local) {
         e.preventDefault();
 
         try {
-            localStorage.setItem('localID', id);
+            localStorage.setItem('local', local);
             history.push('/horarios');
         } catch (error) {
             alert("Falha, tente novmente.");
@@ -74,7 +74,7 @@ export default function HomeUser() {
                                 <p>R${local.valor}</p>
 
                                 <div className="actions">
-                                    <button onClick={(e)=>handleHorarios(e, local.id)} type="submit" className="button">
+                                    <button onClick={(e)=>handleHorarios(e, local.login)} type="submit" className="button">
                                         Ver Horários
                                     </button>
                                 </div>

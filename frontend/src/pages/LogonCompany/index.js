@@ -1,13 +1,13 @@
 import React, {useState } from 'react';
 
 import {Link, useHistory} from 'react-router-dom';
-import { FiLogIn, FiHome } from 'react-icons/fi';
+import { FiLogIn } from 'react-icons/fi';
 
 import api from '../../service/api';
 
-export default function Logon(){
+export default function LogonCompany(){
     
-    const [nick, setNick] = useState('');
+    const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
     const history = useHistory();
 
@@ -15,12 +15,12 @@ export default function Logon(){
         e.preventDefault();
 
         try {
-            const response = await api.post('/login', {nick, senha});
+            const response = await api.post('/login/company', {login, senha});
             if (response.data===true) {
-                localStorage.setItem('login', nick);
-                history.push('/homeuser', nick);
+                localStorage.setItem('login', login);
+                history.push('/homecompany', login);
             }else{
-                alert('Nick ou senha inválidos!')
+                alert('Login ou senha inválidos!')
             }
         } catch (error) {
             alert("Falha no login, tente novmente.");
@@ -34,9 +34,9 @@ export default function Logon(){
                 <h1>Faça seu logon</h1>
 
                 <input 
-                    placeholder="Seu nick" 
-                    value={nick}
-                    onChange={e => setNick(e.target.value)}
+                    placeholder="Seu login" 
+                    value={login}
+                    onChange={e => setLogin(e.target.value)}
                 />
                 <input 
                     placeholder="Sua senha" 
@@ -48,14 +48,9 @@ export default function Logon(){
                 <div className="actions">
                     <button className="button" type="submit" >Entrar</button>
 
-                    <Link className="back-link" to="/company" style={{fontSize: 15}}>
-                        <FiHome size={30} color="#293f7b" />
-                            Sou uma empresa
-                    </Link>
-
-                    <Link className="back-link" to="/register" style={{fontSize: 15}}>
+                    <Link className="back-link" to="/register/company" style={{fontSize: 15}}>
                         <FiLogIn size={30} color="#293f7b" />
-                            Não tenho cadastro
+                            Abrir cadastro
                     </Link>
                 </div>
             

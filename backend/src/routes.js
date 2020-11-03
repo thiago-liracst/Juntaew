@@ -13,6 +13,8 @@ routes.post('/login', UserController.login);
 
 routes.post('/locais', LocalController.create);
 routes.get('/locais', LocalController.list);
+routes.post('/local', LocalController.getLocal);
+routes.post('/login/company', LocalController.login);
 
 routes.post('/horarios', HorarioController.create);
 routes.get('/horarios', HorarioController.list);

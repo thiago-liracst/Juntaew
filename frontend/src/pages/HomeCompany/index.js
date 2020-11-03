@@ -12,7 +12,7 @@ import { Carousel } from 'react-bootstrap';
 
 import api from '../../service/api';
 
-export default function Horarios() {
+export default function HomeCompany() {
 
   const [nome, setNome] = useState("")
   const [dia, setDia] = useState("");
@@ -44,26 +44,21 @@ export default function Horarios() {
   }, []);
 
   useEffect(() => {
-    api.post('horariosLocal', {local:localStorage.getItem('local')})
+    api.post('horariosLocal', {local:localStorage.getItem('login')})
         .then(response => {
             setHorarios(response.data);
         });
   }, []);
 
-  async function handleMarcarHorario(e){
+  async function handleCriarHorario(e){
     e.preventDefault();
 
     try {
-      api.post('/evento', {
-        criador: localStorage.getItem('login').toString(),
-        local: local,
-        nome: nome,
-        dia: parseInt(dia),
-        mes: parseInt(mes),
+      api.post('/horarios', {
+        local: localStorage.getItem('login'),
+        dia: dia,
         inicio: parseInt(inicio),
-        fim: parseInt(fim),
-        esporte: esporte,
-        totalVagas: parseInt(totalVagas),
+        fim: parseInt(fim)
       });
       window.location.reload();
     } catch (error) {
@@ -208,31 +203,14 @@ export default function Horarios() {
 
         </Carousel>
 
-        <form onSubmit={handleMarcarHorario} className="marcarHorario">
-          <h1 style={{marginLeft: 15 }}>Marcar Horário</h1>
+        <form onSubmit={handleCriarHorario} className="marcarHorario">
+          <h1 style={{marginLeft: 15 }}>Criar Horário</h1>
 
-          <h5>Nome do evento</h5>
+          <h5>Dia</h5>
           <input 
-            placeholder="Pelada valendo coca"
-            onChange={(e) => setNome(e.target.value)}
+            placeholder="Dia da semana"
+            onChange={(e) => setDia(e.target.value)}
           />
-
-          <div className="diames">
-            <div className="diadiv">
-              <h5>Dia</h5>
-              <input 
-                placeholder="00"
-                onChange={e => setDia(e.target.value)}
-              />
-            </div>
-            <div className="mesdiv">
-              <h5>Mês</h5>
-              <input 
-                placeholder="00"
-                onChange={e => setMes(e.target.value)}
-              />
-            </div>
-          </div>
           
           <h5>Início</h5>
           <input 
@@ -245,21 +223,9 @@ export default function Horarios() {
             placeholder="10"
             onChange={e => setFim(e.target.value)}
           />
-
-          <h5>Tipo de esporte</h5>
-          <input 
-            placeholder="Futebol"
-            onChange={(e) => setEsporte(e.target.value)}
-          />
-
-          <h5>Quantidade de Vagas</h5>
-          <input 
-            placeholder="15"
-            onChange={(e) => setTotalVagas(e.target.value)}
-          />
         
           <button className="button" type="submit" >
-            Marcar
+            Criar
           </button>
               
         </form>
