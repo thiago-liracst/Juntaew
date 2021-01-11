@@ -33,11 +33,11 @@ export default function HomeCompany() {
   const [sabado, setSabado] = useState([]);
   const [domingo, setDomingo] = useState([]);
 
-  const local = localStorage.getItem('local');
+  const local = localStorage.getItem('login');
   const history = useHistory();
 
   useEffect(() => {
-    api.get('evento')
+    api.post('reservados', {local:local})
         .then(response => {
             setEventos(response.data);
         });

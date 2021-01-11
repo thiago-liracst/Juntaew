@@ -37,14 +37,14 @@ export default function Horarios() {
   const history = useHistory();
 
   useEffect(() => {
-    api.get('evento')
+    api.post('reservados', {local:local})
         .then(response => {
             setEventos(response.data);
         });
   }, []);
 
   useEffect(() => {
-    api.post('horariosLocal', {local:localStorage.getItem('local')})
+    api.post('horariosLocal', {local:local})
         .then(response => {
             setHorarios(response.data);
         });
@@ -64,8 +64,10 @@ export default function Horarios() {
         fim: parseInt(fim),
         esporte: esporte,
         totalVagas: parseInt(totalVagas),
-      });
-      window.location.reload();
+      }).then(() => {
+        window.location.reload();
+      }
+      );
     } catch (error) {
       alert("Erro: "+error);
     }
@@ -87,15 +89,20 @@ export default function Horarios() {
   async function handlePreencher(e, idEvento, disponiveis){
     e.preventDefault();
 
-    try {
-      api.post('/preencherVaga', {
-        idEvento,
-        disponiveis
-      });
-      window.location.reload();
-    } catch (error) {
-      alert("Erro: "+error);
+    if (disponiveis>0) {
+      try {
+        api.post('/preencherVaga', {
+          idEvento,
+          disponiveis
+        });
+        window.location.reload();
+      } catch (error) {
+        alert("Erro: "+error);
+      }
+    } else {
+      alert("Todas as vagas preenchidas!")
     }
+    
   }
 
   function handleLogout(){

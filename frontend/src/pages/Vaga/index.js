@@ -13,18 +13,17 @@ export default function Vaga() {
     const history = useHistory();
     
     useEffect(() => {
+        try {
 
-        const idEvento = localStorage.getItem('evento');
+            const idEvento = localStorage.getItem('evento');
 
-        api.get('evento')
+            api.post('getEvento', {idEvento})
             .then(response => {
-                response.data.map((horario) => {
-                    if (horario.id === parseInt(idEvento)) {
-                        console.log("Entroouuuu");
-                        setEvento(horario);
-                    }
-                });
+                setEvento(response.data);
             });
+        } catch (error) {
+            alert(error);
+        }
       }, []);
 
       function handleLogout(){

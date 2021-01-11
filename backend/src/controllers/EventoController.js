@@ -49,7 +49,7 @@ module.exports = {
                 esporte,
                 totalVagas
             } = request.body;
-            const disponiveis = totalVagas-1;
+            const disponiveis = totalVagas;
             
             //console.log(validaCriador(criador))
             if (
@@ -72,7 +72,7 @@ module.exports = {
 
                 return response.json("Sucesso!");
             }
-            throw "Evento não disponível!";  
+            throw new Error("Evento não disponível!");  
         } catch (error) {
             return response.json(error);
         }
@@ -80,7 +80,8 @@ module.exports = {
 
     async list(request, response){
         try {
-            const eventos = await connection('eventos').select('*');
+            const local = request.body.local;
+            const eventos = await connection('eventos').where('local', local).select('*');
             return response.json(eventos);
         } catch (error) {
             return response.json(error);
@@ -102,6 +103,16 @@ module.exports = {
             const {idEvento, disponiveis} = request.body;
             await connection('eventos').where('id', idEvento).update('disponiveis', disponiveis-1);
             return response.json("Sucess!");
+        } catch (error) {
+            return response.json(error);
+        }
+    },
+
+    async getEvento(request, response){
+        try {
+            const idEvento = request.body.idEvento;
+            const evento = await connection('eventos').select('*').where('id', idEvento).first();
+            return response.json(evento);
         } catch (error) {
             return response.json(error);
         }

@@ -22,7 +22,8 @@ routes.post('/horariosLocal', HorarioController.horariosLocal);
 routes.delete('/horarios', HorarioController.delete);
 
 routes.post('/evento', EventoController.create);
-routes.get('/evento', EventoController.list);
+routes.post('/getEvento', EventoController.getEvento);
+routes.post('/reservados', EventoController.list);
 routes.delete('/evento', EventoController.delete);
 routes.post('/preencherVaga', EventoController.preencherVaga);
 
