@@ -14,24 +14,13 @@ import api from '../../service/api';
 
 export default function HomeCompany() {
 
-  const [nome, setNome] = useState("")
   const [dia, setDia] = useState("");
-  const [mes, setMes] = useState("");
   const [inicio, setInicio] = useState("");
   const [fim, setFim] = useState("");
-  const [esporte, setEsporte] = useState("");
-  const [totalVagas, setTotalVagas] = useState("");
+
 
   const [eventos, setEventos] = useState([]);
   const [horarios, setHorarios] = useState([]);
-
-  const [segunda, setSegunda] = useState([]);
-  const [terca, setTerca] = useState([]);
-  const [quarta, setQuarta] = useState([]);
-  const [quinta, setQuinta] = useState([]);
-  const [sexta, setSexta] = useState([]);
-  const [sabado, setSabado] = useState([]);
-  const [domingo, setDomingo] = useState([]);
 
   const local = localStorage.getItem('login');
   const history = useHistory();

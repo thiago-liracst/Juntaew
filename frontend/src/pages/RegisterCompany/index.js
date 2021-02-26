@@ -14,33 +14,38 @@ export default function RegisterCompany() {
     const [valor, setValor] = useState('');
     const [login, setLogin] = useState('');
     const [senha, setSenha] = useState('');
+    const [senha2, setSenha2] = useState('');
 
     const history = useHistory();
 
     async function handleRegister(e) {
         e.preventDefault();
 
-        const data = {
-            nome,
-            endereco,
-            cidade,
-            uf,
-            valor,
-            login,
-            senha
-        };
+        if (senha===senha2) {
+            const data = {
+                nome,
+                endereco,
+                cidade,
+                uf,
+                valor,
+                login,
+                senha
+            };
 
-        try {
-            const response = await api.post('/locais', data);
-            if (response.data==="Sucess!") {
-                alert(response.data);
-                history.push('/');
-            }else{
-                throw Error("Login já cadastrado.");
+            try {
+                const response = await api.post('/locais', data);
+                if (response.data==="Sucess!") {
+                    alert(response.data);
+                    history.push('/');
+                }else{
+                    throw Error("Login já cadastrado.");
+                }
+                
+            } catch (error) {
+                alert(error.message);
             }
-            
-        } catch (error) {
-            alert(error.message);
+        } else {
+            alert('As senhas não se correspondem.');
         }
         
     }
@@ -88,8 +93,15 @@ export default function RegisterCompany() {
                     />
                     <input 
                         placeholder="Digite sua senha"
+                        type="password"
                         value={senha}
                         onChange={e => setSenha(e.target.value)}
+                    />
+                    <input 
+                        placeholder="Digite sua senha novamente"
+                        type="password"
+                        value={senha2}
+                        onChange={e => setSenha2(e.target.value)}
                     />
                     <button className="button" type="submit" >
                         Salvar

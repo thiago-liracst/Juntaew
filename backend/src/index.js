@@ -10,4 +10,8 @@ app.use(cors());
 
 app.use(routes);
 
-app.listen(3333);
+var port = 3333;
+//var port = process.env.PORT || 3000;
+app.listen(port, function () {
+    console.log('Umbler listening on port %s', port);
+});

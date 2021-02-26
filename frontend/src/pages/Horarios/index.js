@@ -25,14 +25,6 @@ export default function Horarios() {
   const [eventos, setEventos] = useState([]);
   const [horarios, setHorarios] = useState([]);
 
-  const [segunda, setSegunda] = useState([]);
-  const [terca, setTerca] = useState([]);
-  const [quarta, setQuarta] = useState([]);
-  const [quinta, setQuinta] = useState([]);
-  const [sexta, setSexta] = useState([]);
-  const [sabado, setSabado] = useState([]);
-  const [domingo, setDomingo] = useState([]);
-
   const local = localStorage.getItem('local');
   const history = useHistory();
 
@@ -95,14 +87,14 @@ export default function Horarios() {
           idEvento,
           disponiveis
         });
-        window.location.reload();
+        localStorage.setItem('evento', idEvento);
+        history.push('/vaga');
       } catch (error) {
         alert("Erro: "+error);
       }
     } else {
       alert("Todas as vagas preenchidas!")
     }
-    
   }
 
   function handleLogout(){

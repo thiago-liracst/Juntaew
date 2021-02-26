@@ -12,6 +12,8 @@ export default function HomeUser() {
     
     const [locais, setLocais] = useState([]);
 
+    const [search, setSearch]  = useState('');
+
     const history = useHistory();
 
     useEffect(() => {
@@ -20,6 +22,12 @@ export default function HomeUser() {
             setLocais(response.data);
         });
     }, []);
+
+    const searchArray = (array, stringSearch) => {
+        return array.filter((item) => {
+            return item.nome.toUpperCase().match(stringSearch.toUpperCase());
+        });
+    }
 
     async function handleHorarios(e, local) {
         e.preventDefault();
@@ -49,8 +57,9 @@ export default function HomeUser() {
 
             <div className="container-list">
                 <input 
-                    placeholder="Pesquisar esporte"
-                    onChange={()=>{}}
+                    placeholder="Pesquisar local"
+                    onChange={(e) => setSearch(e.target.value)}
+                    value={search}
                     style={{
                         width: '89%',
                         height: 40,
@@ -62,7 +71,7 @@ export default function HomeUser() {
 
                 <section className="form">
                     <ul>
-                        {locais.map(local => (
+                        {searchArray(locais, search).map(local => (
                             <li key={local.id}>
                                 <strong>Local:</strong>
                                 <p>{local.nome}</p>

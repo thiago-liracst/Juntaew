@@ -11,25 +11,30 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [nick, setNick] = useState('');
     const [senha, setSenha] = useState('');
+    const [senha2, setSenha2] = useState('');
 
     const history = useHistory();
 
     async function handleRegister(e) {
         e.preventDefault();
 
-        const data = {
-            nick,
-            senha,
-            nome,
-            email,
-        };
-
-        try {
-            const response = await api.post('/users', data);
-            alert(response.data);
-            history.push('/');
-        } catch (error) {
-            alert('Erro no cadastro, tente novamente.');
+        if (senha===senha2) {
+            const data = {
+                nick,
+                senha,
+                nome,
+                email,
+            };
+    
+            try {
+                const response = await api.post('/users', data);
+                alert(response.data);
+                history.push('/');
+            } catch (error) {
+                alert('Erro no cadastro, tente novamente.');
+            }
+        } else {
+            alert('As senhas não se correspondem.');
         }
         
     }
@@ -64,6 +69,12 @@ export default function Register() {
                         type="password"
                         value={senha}
                         onChange={e => setSenha(e.target.value)}
+                    />
+                    <input 
+                        placeholder="Digite sua senha novamente" 
+                        type="password"
+                        value={senha2}
+                        onChange={e => setSenha2(e.target.value)}
                     />
                     <button className="button" type="submit" >
                         Salvar
